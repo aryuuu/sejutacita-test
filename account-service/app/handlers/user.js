@@ -1,9 +1,24 @@
 const bcrypt = require('bcrypt');
+const { 
+  assertNotNull,
+  getOnlyDefinedFields
+} = require('app/utils/validator');
+const { toArrayInteger } = require('app/utils/converter');
 const userRepo = require('app/repositories/user');
+const ServiceError = require('app/utils/service-error');
 
 const salt = bcrypt.genSaltSync(10);
 
 const createUser = async (data) => {
+  assertNotNull(data, 'username');
+  assertNotNull(data, 'password');
+
+  const user = await userRepo.getUserByUsername(data.username);
+
+  if (user != null) {
+    throw new ServiceError(400, `username ${data.username} already exist`);
+  }
+  
   const password = await bcrypt.hashSync(data.password, salt);
 
   const createdAt = userRepo.createUser(data.username, password);
@@ -13,7 +28,7 @@ const createUser = async (data) => {
 
 const getUsers = (query) => {
   const options = {
-    ids_user: query.ids ? query.ids.split(',') : null,
+    ids_user: query.ids ? toArrayInteger(query.ids) : null,
   };
 
   const users = userRepo.getUsers(options);
@@ -28,7 +43,13 @@ const getUserById = (userId) => {
 }
 
 const updateUser = (userId, data) => {
-  const result = userRepo.updateUser(userId, data);
+  const filteredData = getOnlyDefinedFields(data, ['username', 'password']);
+
+  if (filteredData.password != null) {
+    filteredData.password = bcrypt.hashSync(filteredData.password, salt);
+  }
+
+  const result = userRepo.updateUser(userId, filteredData);
 
   return result;
 }

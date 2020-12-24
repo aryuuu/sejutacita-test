@@ -9,6 +9,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(router);
+app.use(require('app/middlewares/error-handler'));
 
 app.listen(config.PORT, () => {
   console.log(`Account service is listening on port ${config.PORT}`);

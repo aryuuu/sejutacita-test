@@ -1,15 +1,8 @@
-const assert = require('assert');
 const ServiceError = require('app/utils/service-error');
 
 const assertNotNull = (object, field) => {
-  try {
-    return assert(
-      object[field] != null,
-      `${field} should not be null`
-    );
-  } catch (error) {
-    throw new ServiceError(400, error);
-    // throw new Error(error);
+  if (object[field] == null) {
+    throw new ServiceError(400, `${field} should not be null`);
   }
 }
 

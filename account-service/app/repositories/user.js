@@ -42,19 +42,29 @@ const getUserById = async (userId) => {
   return user;
 }
 
+const getUserByUsername = async (username) => {
+  const result = await Model.findOne(
+    {
+      username: username,
+    }
+  ).exec();
+
+  return result;;
+}
+
 const updateUser = async (userId, data) => {
-  const user = getUserById(userId);
+  data.updated_at = Date.now();
 
-  const currTime = Date.now();
+  const result = await Model.findOneAndUpdate(
+    {
+    _id: userId
+    },
+    {
+      $set: data
+    },
+  ).exec();
 
-  const mutationObj = {
-    updated_at: currTime
-  }
-
-  await Model.updateOne({ _id: userId }, mutationObj);
-
-  return { updated_at: currTime };
-  
+  return result != null ? 1 : 0;8
 }
 
 const deleteUser = async (userId) => {
@@ -67,6 +77,7 @@ module.exports = {
   createUser,
   getUsers,
   getUserById,
+  getUserByUsername,
   updateUser,
   deleteUser,
 }
