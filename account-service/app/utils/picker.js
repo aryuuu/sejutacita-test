@@ -1,11 +1,3 @@
-const ServiceError = require('app/utils/service-error');
-
-const assertNotNull = (object, field) => {
-  if (object[field] == null) {
-    throw new ServiceError(400, `${field} should not be null`);
-  }
-}
-
 const getOnlyDefinedFields = (obj, fields) => {
   const result = {};
 
@@ -28,8 +20,18 @@ const getSpecifiedFields = (obj, fields) => {
   return result;
 }
 
+const excludeFields = (obj, fields) => {
+  const result = {...obj};
+  
+  fields.forEach(field => {
+    delete result[field];
+  })
+
+  return result;
+}
+
 module.exports = {
-  assertNotNull,
+  getOnlyDefinedFields,
   getSpecifiedFields,
-  getOnlyDefinedFields
+  excludeFields,
 }

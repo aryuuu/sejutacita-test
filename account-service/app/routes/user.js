@@ -1,5 +1,6 @@
 const express = require('express');
 const userHandler = require('app/handlers/user');
+const { excludeFields } = require('app/utils/picker');
 
 const router = express();
 const subRouter = express();
@@ -31,18 +32,29 @@ router.use(
   '/:id', 
   (req, res, next) => {
     req.parent = {};
-    req.parent.id_user = req.params.id;
+    req.parent.identifier = req.params.id;
     next();
   }, 
   subRouter
 );
 
+subRouter.get('/password', async (req, res, next) => {
+  try {
+    const result = await userHandler
+      .getUserByIdentifier(req.parent.identifier);
+
+    res.json({ data: excludeFields(result, ['created_at', 'updated_at']) });
+  } catch (error) {
+    next(error);
+  }
+});
+
 subRouter.get('/', async (req, res, next) => {
   try {
-    const result = await userHandler.getUserById(req.parent.id_user);
-  
-    res.json({ data: result });
-    
+    const result = await userHandler
+      .getUserByIdentifier(req.parent.identifier);
+      
+    res.json({ data: excludeFields(result, ['password']) });
   } catch (error) {
     next(error);
   }

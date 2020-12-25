@@ -30,26 +30,35 @@ const getUsers = async (options = {}) => {
 const getUserById = async (userId) => {
   const user = await Model.findOne(
     {
-    _id: userId
+      _id: userId
     },
     {
+      _id: 1,
       username: 1,
+      password: 1,
       created_at: 1,
-      updated_at: 1
+      updated_at: 1,
     }
   );
 
-  return user;
+  return user._doc;
 }
 
 const getUserByUsername = async (username) => {
   const result = await Model.findOne(
     {
       username: username,
+    },
+    {
+      _id: 1,
+      username: 1,
+      password: 1,
+      created_at: 1,
+      updated_at: 1,
     }
   ).exec();
 
-  return result;;
+  return result._doc;
 }
 
 const updateUser = async (userId, data) => {

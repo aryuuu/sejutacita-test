@@ -1,9 +1,8 @@
 const bcrypt = require('bcrypt');
-const { 
-  assertNotNull,
-  getOnlyDefinedFields
-} = require('app/utils/validator');
+const { assertNotNull } = require('app/utils/validator');
 const { toArrayInteger } = require('app/utils/converter');
+const { getOnlyDefinedFields } = require('app/utils/picker');
+
 const userRepo = require('app/repositories/user');
 const ServiceError = require('app/utils/service-error');
 
@@ -36,9 +35,14 @@ const getUsers = (query) => {
   return users;
 }
 
-const getUserById = (userId) => {
-  const user = userRepo.getUserById(userId);
-  
+const getUserByIdentifier = async (identifier) => {
+  let user;
+  if (parseInt(identifier)) {
+    user = await userRepo.getUserById(identifier);
+  } else {
+    user = await userRepo.getUserByUsername(identifier) 
+  }
+ 
   return user;
 }
 
@@ -61,7 +65,7 @@ const deleteUser = (userId) => {
 module.exports = {
   createUser,
   getUsers,
-  getUserById,
+  getUserByIdentifier,
   updateUser,
   deleteUser,
 }
