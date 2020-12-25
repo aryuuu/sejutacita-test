@@ -54,7 +54,7 @@ subRouter.get('/', async (req, res, next) => {
     const result = await userHandler
       .getUserByIdentifier(req.parent.identifier);
       
-    res.json({ data: excludeFields(result, ['password']) });
+    res.json({ data: excludeFields(result, ['password', 'role']) });
   } catch (error) {
     next(error);
   }
@@ -62,7 +62,8 @@ subRouter.get('/', async (req, res, next) => {
 
 subRouter.put('/', async (req, res, next) => {
   try {
-    const result = await userHandler.updateUser(req.parent.id_user, req.body);
+    const result = await userHandler
+      .updateUser(req.parent.identifier, req.body);
   
     res.json({ data: result });
   } catch (error) {
@@ -72,9 +73,13 @@ subRouter.put('/', async (req, res, next) => {
 
 subRouter.delete('/', async (req, res) => {
   try {
-    const result = await userHandler.deleteUser(req.parent.id_user);
+    const result = await userHandler.deleteUser(req.parent.identifier);
   
-    res.status(204).send();
+    if (result) {
+      res.sendStatus(204);
+    } else {
+      res.status(400).json({ message: 'user not found' });
+    }
   } catch (error) {
     next(error);
   }

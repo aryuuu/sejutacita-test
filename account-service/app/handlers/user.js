@@ -18,9 +18,15 @@ const createUser = async (data) => {
     throw new ServiceError(400, `username ${data.username} already exist`);
   }
   
-  const password = await bcrypt.hashSync(data.password, salt);
+  if (data.role == null) {
+    data.role = {
+      name: 'user',
+      id: 0,
+    };
+  }
 
-  const createdAt = userRepo.createUser(data.username, password);
+  const password = await bcrypt.hashSync(data.password, salt);
+  const createdAt = userRepo.createUser(data.username, password, data.role);
 
   return createdAt;
 }
@@ -47,7 +53,14 @@ const getUserByIdentifier = async (identifier) => {
 }
 
 const updateUser = (userId, data) => {
-  const filteredData = getOnlyDefinedFields(data, ['username', 'password']);
+  const filteredData = getOnlyDefinedFields(
+    data, 
+    [
+      'username', 
+      'password',
+      'role',
+    ]
+  );
 
   if (filteredData.password != null) {
     filteredData.password = bcrypt.hashSync(filteredData.password, salt);

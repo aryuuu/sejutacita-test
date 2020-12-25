@@ -1,13 +1,14 @@
 const Model = require('app/models/user');
 
-const createUser = async  (username, password) => {
+const createUser = async  (username, password, role) => {
   const currTime = Date.now();
 
   await Model.create({
     username: username,
     password: password,
+    role: role,
     created_at: currTime,
-    updated_at: currTime
+    updated_at: currTime,
   });
 
   return { created_at: currTime };
@@ -36,12 +37,13 @@ const getUserById = async (userId) => {
       _id: 1,
       username: 1,
       password: 1,
+      role: 1,
       created_at: 1,
       updated_at: 1,
     }
   );
 
-  return user._doc;
+  return user ? user._doc : user;
 }
 
 const getUserByUsername = async (username) => {
@@ -53,15 +55,17 @@ const getUserByUsername = async (username) => {
       _id: 1,
       username: 1,
       password: 1,
+      role: 1,
       created_at: 1,
       updated_at: 1,
     }
   ).exec();
 
-  return result._doc;
+  return result ? result._doc : result;
 }
 
 const updateUser = async (userId, data) => {
+  console.log(userId);
   data.updated_at = Date.now();
 
   const result = await Model.findOneAndUpdate(
@@ -77,8 +81,7 @@ const updateUser = async (userId, data) => {
 }
 
 const deleteUser = async (userId) => {
-  const doc = await Model.findOneAndDelete({ _id: userId}).exec();
-  console.log(doc);
+  const doc = await Model.findOneAndDelete({ _id: userId }).exec();
   return doc == null ? 0 : 1;
 }
 

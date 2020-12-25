@@ -14,6 +14,9 @@ const UserSchema = new Schema({
   password: {
     type: String,
   },
+  role: {
+    type: Schema.Types.Mixed,
+  },
   created_at: {
     type: Number
   },
