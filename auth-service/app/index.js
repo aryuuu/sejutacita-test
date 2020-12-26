@@ -12,7 +12,7 @@ app.use(router);
 app.use(require('app/middlewares/error-handler'));
 
 app.listen(config.PORT, () => {
-  console.log(`Account service is listening on port ${config.PORT}`);
+  console.log(`Auth service is listening on port ${config.PORT}`);
 });
 
 module.exports = app;

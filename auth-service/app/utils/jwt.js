@@ -23,7 +23,7 @@ const verifyToken = (token) => {
       jwt.verify(token, config.JWT_SECRET, (err, result) => {
         err == null
           ? resolve(result)
-          : reject(new ServiceError(422, err.message));
+          : reject(new ServiceError(422, `invalid token`));
       })
     });
   } catch (error) {
