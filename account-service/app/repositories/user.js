@@ -65,7 +65,6 @@ const getUserByUsername = async (username) => {
 }
 
 const updateUser = async (userId, data) => {
-  console.log(userId);
   data.updated_at = Date.now();
 
   const result = await Model.findOneAndUpdate(

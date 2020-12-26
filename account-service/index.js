@@ -1,6 +1,7 @@
 require('app-module-path').addPath(__dirname);
-require('dotenv').config()
-require('app');
+require('dotenv').config();
+
+const seeder = require('app/seeders');
 
 const mongoose = require('mongoose');
 
@@ -14,7 +15,8 @@ mongoose
       useNewUrlParser: true
     }
   )
-  .then(() => {
+  .then(async () => {
+    await seeder();
     require('app');
   })
   .catch(err => {
