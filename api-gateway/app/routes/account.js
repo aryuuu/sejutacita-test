@@ -17,9 +17,7 @@ router.get('/:identifier', authHandler(true), (req, res, next) => {
 
 router.put('/:id', authHandler(true, ['admin']), (req, res, next) => {
   try {
-    accountProxy.web(req, res, {}, (err, req, res) => {
-      console.log(req.url);
-    });
+    accountProxy.web(req, res);
   } catch (error) {
     next(error);
   }
