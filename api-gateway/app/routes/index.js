@@ -1,12 +1,9 @@
 const express = require('express');
-const httpProxy = require('http-proxy');
-
-const { ACCOUNT_SERVICE_URL } = require('app/configs');
 const authHandler = require('app/handlers/auth');
+const accountRouter = require('app/routes/account');
 const authHandlerMiddleware = require('app/middlewares/auth-handler');
 
 const router = express();
-const accountRouter = require('app/routes/account');
 
 router.get('/_ping', authHandlerMiddleware(true), (req, res, next) => {
   try {
@@ -28,6 +25,16 @@ router.post('/login', authHandlerMiddleware(false), async (req, res, next) => {
     next(error);
   }
 });
+
+router.post('/refresh', authHandlerMiddleware(false), async (req, res, next) => {
+  try {
+    const result = await authHandler.refresh(req.body.refresh_token);
+
+    res.json({ data: result });
+  } catch (error) {
+    next(error);
+  }
+})
 
 router.use('/account', accountRouter);
 

@@ -4,6 +4,7 @@ const querystring = require('querystring');
 const create = (target) => {
   const proxy = httpProxy.createProxyServer({
     target: target,
+    xfwd: true,
   });
 
   proxy.on('proxyReq', (proxyReq, req) => {

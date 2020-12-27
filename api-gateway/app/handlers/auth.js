@@ -8,7 +8,12 @@ const verify = (token) => {
   return authRepo.verify(token);
 }
 
+const refresh = (token) => {
+  return authRepo.refresh(token);
+}
+
 module.exports = {
   authenticate,
   verify,
+  refresh,
 };
