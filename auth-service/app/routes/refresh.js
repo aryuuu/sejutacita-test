@@ -6,9 +6,10 @@ const router = express();
 
 router.post('/', async (req, res, next) => {
   try {
-    assertNotNull(req.body, 'access_token');
+    assertNotNull(req.body, 'refresh_token');
+
     const result =  await authenticationHandler
-      .verify(req.body.access_token);
+      .refresh(req.body.refresh_token);
     
     res.json({ data: result });
   } catch (error) {
