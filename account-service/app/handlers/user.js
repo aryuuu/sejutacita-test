@@ -31,7 +31,7 @@ const createUser = async (data) => {
   return createdAt;
 }
 
-const getUsers = (query) => {
+const getUsers = (query = {}) => {
   const options = {
     ids_user: query.ids ? toArrayInteger(query.ids) : null,
   };

@@ -9,7 +9,7 @@ const cfg = require('app/configs');
 
 mongoose
   .connect(
-    `mongodb://${cfg.MONGO_HOST}/${cfg.MONGO_DATABASE}?${cfg.MONGO_OPTIONS}`,
+    `${cfg.MONGO_HOST}/${cfg.MONGO_DATABASE}?${cfg.MONGO_OPTIONS}`,
     {
       useUnifiedTopology: true,
       useNewUrlParser: true
@@ -17,7 +17,7 @@ mongoose
   )
   .then(async () => {
     await seeder();
-    require('app');
+    await require('app');
   })
   .catch(err => {
     console.log(err);
