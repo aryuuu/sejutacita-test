@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-service
+spec:
+  selector:
+    matchLabels:
+      app: account-service
+  template:
+    metadata:
+      labels:
+        app: account-service
+    spec:
+      containers:
+      - name: account-service
+        image: fattfatt/account-service:bender
+        resources:
+          limits:
+            memory: "1280Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+        env:
+          - name: SERVICE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: account-service-secret
+                key: SERVICE_NAME
+          - name: PORT
+            valueFrom:
+              secretKeyRef:
+                name: account-service-secret
+                key: PORT
+          - name: MONGO_HOST
+            valueFrom:
+              secretKeyRef:
+                name: account-service-secret
+                key: MONGO_HOST
+          - name: ADMIN_USER
+            valueFrom:
+              secretKeyRef:
+                name: account-service-secret
+                key: ADMIN_USER
+          - name: ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: account-service-secret
+                key: ADMIN_PASSWORD
+          - name: DUMMY_USER
+            valueFrom:
+              secretKeyRef:
+                name: account-service-secret
+                key: DUMMY_USER
+          - name: DUMMY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: account-service-secret
+                key: DUMMY_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: account-service
+  ports:
+  - port: 3000
+    targetPort: 3000

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  labels:
+    app: api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - name: api-gateway
+        image: fattfatt/api-gateway:leela
+        resources:
+          limits:
+            memory: "1280Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+        env:
+          - name: SERVICE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: api-gateway-secret
+                key: SERVICE_NAME
+          - name: PORT
+            valueFrom:
+              secretKeyRef:
+                name: api-gateway-secret
+                key: PORT
+          - name: AUTH_SERVICE_URL
+            valueFrom:
+              secretKeyRef:
+                name: api-gateway-secret
+                key: AUTH_SERVICE_URL
+          - name: ACCOUNT_SERVICE_URL
+            valueFrom:
+              secretKeyRef:
+                name: api-gateway-secret
+                key: ACCOUNT_SERVICE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+spec:
+  type: LoadBalancer
+  selector:
+    app: api-gateway
+  ports:
+  - port: 3000
+    targetPort: 3000
+
