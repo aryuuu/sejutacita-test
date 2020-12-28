@@ -43,6 +43,11 @@ spec:
               secretKeyRef:
                 name: api-gateway-secret
                 key: ACCOUNT_SERVICE_URL
+          - name: DOCS_URL
+            valueFrom:
+              secretKeyRef:
+                name: api-gateway-secret
+                key: DOCS_URL
 ---
 apiVersion: v1
 kind: Service
