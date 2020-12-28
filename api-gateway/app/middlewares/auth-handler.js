@@ -9,7 +9,12 @@ module.exports = (required, allowedRoles = []) => async (req, res, next) => {
         throw new ServiceError(401, 'Authorization token required');
       }
 
-      const client = await authHandler.verify(authorization);
+      const split = authorization.split(' ');
+      if (split.length < 2 || split[0].toLowerCase() != 'bearer') {
+        throw new ServiceError(401, 'Authorization token required');
+      }
+
+      const client = await authHandler.verify(split[1]);
 
       if (allowedRoles.length && !allowedRoles.includes(client.role.name)) {
         throw new ServiceError(
