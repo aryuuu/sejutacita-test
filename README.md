@@ -8,7 +8,8 @@ password=b1t3mysh1nym3t4lax3
 ```
 
 ## Postman Collection
-`http://139.162.26.200/docs`
+[API Gateway Collection](http://139.162.26.200:3000/docs)
+
 
 ## Directories
 ```
@@ -29,9 +30,12 @@ deployments: kubernetes deployment scripts
 ## Architecture
 Simple layout
 
+![Simple layout](https://i.imgur.com/zTfiMvP.png)
+
 More detailed one
 
 ## Login Flow
+![Login Flow](https://i.imgur.com/1Mib33n.png)
 
 ## CRUD Flow
-
+![CRUD Flow](https://i.imgur.com/QVVHkD9.png)
