@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('app/configs');
 const authHandler = require('app/handlers/auth');
 const accountRouter = require('app/routes/account');
 const authHandlerMiddleware = require('app/middlewares/auth-handler');
@@ -8,6 +9,14 @@ const router = express();
 router.get('/_ping', authHandlerMiddleware(true), (req, res, next) => {
   try {
     res.json({ message: 'API Gateway'});
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/docs', authHandlerMiddleware(false), (req, res, next) => {
+  try {
+    res.redirect(config.DOCS_URL);
   } catch (error) {
     next(error);
   }
