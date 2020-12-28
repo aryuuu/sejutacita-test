@@ -1,4 +1,5 @@
 # Sejutacita Test
+Simple role based access control REST API with microservice architecture
 
 ## Admin credentials
 ```
@@ -7,7 +8,7 @@ password=b1t3mysh1nym3t4lax3
 ```
 
 ## Postman Collection
-
+`http://139.162.26.200/docs`
 
 ## Directories
 ```
@@ -25,4 +26,12 @@ deployments: kubernetes deployment scripts
     utils: utility functions
 ```
 
-For archi
+## Architecture
+Simple layout
+
+More detailed one
+
+## Login Flow
+
+## CRUD Flow
+
