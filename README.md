@@ -34,6 +34,8 @@ Simple layout
 
 More detailed one
 
+![architecture](https://i.imgur.com/JB6zTz9.png)
+
 ## Login Flow
 ![Login Flow](https://i.imgur.com/1Mib33n.png)
 
